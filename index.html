@@ -106,10 +106,12 @@
   .project-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(290px, 1fr)); gap: 20px; }
   .project-card { background: white; border-radius: var(--radius); border: 1px solid var(--border); overflow: hidden; cursor: pointer; transition: transform .2s, box-shadow .2s; }
   .project-card:hover { transform: translateY(-5px); box-shadow: var(--shadow); }
-  .card-banner { height: 128px; display: flex; align-items: center; justify-content: center; position: relative; }
-  .app-icon { width: 84px; height: 84px; border-radius: var(--radius-icon); display: flex; align-items: center; justify-content: center; font-size: 38px; border: 3px solid rgba(255,255,255,0.85); box-shadow: 0 4px 18px rgba(0,0,0,0.18); overflow: hidden; }
-  .app-icon img { width: 100%; height: 100%; object-fit: cover; border-radius: var(--radius-icon); }
-  .type-badge { position: absolute; top: 12px; right: 12px; padding: 4px 10px; border-radius: 6px; font-size: 11px; font-weight: 800; text-transform: uppercase; letter-spacing: .4px; }
+  .card-banner { height: 168px; display: flex; align-items: center; justify-content: center; position: relative; overflow: hidden; }
+  .app-icon { width: 124px; height: 124px; border-radius: 28px; display: flex; align-items: center; justify-content: center; font-size: 50px; border: 4px solid rgba(255,255,255,0.95); box-shadow: 0 10px 30px rgba(0,0,0,0.22), 0 2px 8px rgba(0,0,0,0.12); overflow: hidden; transition: transform .3s cubic-bezier(.2,.8,.2,1); position: relative; z-index: 2; }
+  .project-card:hover .app-icon { transform: scale(1.06) translateY(-3px); }
+  .app-icon img { width: 100%; height: 100%; object-fit: cover; border-radius: 24px; }
+  .banner-glow { position: absolute; top: 50%; left: 50%; transform: translate(-50%,-50%); width: 200px; height: 200px; border-radius: 50%; z-index: 0; }
+  .type-badge { position: absolute; top: 12px; right: 12px; padding: 4px 10px; border-radius: 6px; font-size: 11px; font-weight: 800; text-transform: uppercase; letter-spacing: .4px; z-index: 2; }
   .badge-game { background: #FFF3E0; color: #E65100; }
   .badge-app  { background: #E3F2FD; color: #0D47A1; }
   .card-body { padding: 16px; }
@@ -137,7 +139,7 @@
   .modal::-webkit-scrollbar { width: 5px; }
   .modal::-webkit-scrollbar-thumb { background: var(--border); border-radius: 3px; }
   .modal-header { padding: 22px 24px; display: flex; align-items: center; gap: 16px; border-bottom: 1px solid var(--border); position: sticky; top: 0; background: white; z-index: 10; border-radius: 22px 22px 0 0; }
-  .modal-icon { width: 64px; height: 64px; border-radius: 16px; display: flex; align-items: center; justify-content: center; font-size: 30px; flex-shrink: 0; overflow: hidden; }
+  .modal-icon { width: 72px; height: 72px; border-radius: 18px; display: flex; align-items: center; justify-content: center; font-size: 32px; flex-shrink: 0; overflow: hidden; box-shadow: 0 4px 14px rgba(0,0,0,0.15); }
   .modal-icon img { width: 100%; height: 100%; object-fit: cover; border-radius: 16px; }
   .modal-title-group { flex: 1; }
   .modal-name { font-family: 'Space Grotesk', sans-serif; font-size: 22px; font-weight: 900; color: var(--navy); }
@@ -437,7 +439,7 @@ const projects = [
     videoFile: 'videos/fruitsManiaRecord.mp4',
     screenshots: [],
     tags: ['Unity', 'C#', 'AdMob', 'Match-3', '100 Bölüm', 'Uygulama İçi Satın Alma'],
-    price: '5.000 ₺'
+    price: '6.000 ₺'
   },
   {
     id: 7,
@@ -451,7 +453,8 @@ const projects = [
     description: 'Tek dokunuşla kontrol edilen, hızlı tempolu bir zigzag yön değiştirme oyunu. Basit ama bağımlılık yapan oynanış mekaniği, Unity ile geliştirilmiş ve AdMob reklam entegrasyonu içerir.',
     videoFile: 'videos/ZigZagRecord.mp4',
     screenshots: [],
-    tags: ['Unity', 'C#', 'AdMob', 'Hyper-Casual']
+    tags: ['Unity', 'C#', 'AdMob', 'Hyper-Casual'],
+    price: '5.000 ₺'
   },
   {
     id: 8,
@@ -479,7 +482,8 @@ const projects = [
     description: 'Uzaylılardan kaçarak hayatta kalmaya çalıştığınız hızlı tempolu bir arcade oyunu. Unity ile geliştirilmiş, basit kontroller ve giderek zorlaşan zorluk seviyesi sunar.',
     videoFile: 'videos/EscapeTheAliens.mp4',
     screenshots: [],
-    tags: ['Unity', 'C#', 'Arcade', 'AdMob']
+    tags: ['Unity', 'C#', 'Arcade', 'AdMob'],
+    price: '6.000 ₺'
   },
   {
     id: 2,
@@ -635,6 +639,7 @@ function renderProjects(filter) {
   document.getElementById('project-grid').innerHTML = list.map(p => `
     <div class="project-card" onclick="openModal(${p.id})">
       <div class="card-banner" style="background:linear-gradient(135deg,${p.iconBg}26,${p.iconBg}4d)">
+        <div class="banner-glow" style="background:radial-gradient(circle, ${p.iconBg}55 0%, transparent 70%)"></div>
         <div class="app-icon" style="background:${p.iconBg}">
           ${p.iconUrl ? `<img src="${p.iconUrl}" alt="${p.name}">` : `<span style="font-size:38px;line-height:1">${p.iconEmoji}</span>`}
         </div>
