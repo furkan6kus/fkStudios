@@ -1,0 +1,761 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Furkan Kuş — Oyun & Uygulama Geliştirici</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;600;700;800&family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --green: #43A047;
+    --green-light: #E8F5E9;
+    --green-dark: #2E7D32;
+    --navy: #1A1A2E;
+    --gray: #6B7280;
+    --border: #E5E7EB;
+    --bg: #F8F9FA;
+    --white: #FFFFFF;
+    --radius: 16px;
+    --radius-sm: 10px;
+    --radius-icon: 22px;
+    --shadow: 0 2px 16px rgba(0,0,0,0.08);
+  }
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  html { scroll-behavior: smooth; }
+  body { font-family: 'Inter', sans-serif; background: var(--bg); color: var(--navy); line-height: 1.6; }
+  h1,h2,h3,h4 { font-family: 'Space Grotesk', sans-serif; }
+
+  /* NAV */
+  nav { position: sticky; top: 0; background: rgba(255,255,255,0.96); backdrop-filter: blur(12px); border-bottom: 1px solid var(--border); z-index: 200; padding: 0 24px; }
+  .nav-inner { max-width: 1100px; margin: 0 auto; display: flex; align-items: center; justify-content: space-between; height: 64px; }
+  .nav-logo { display: flex; align-items: center; gap: 10px; text-decoration: none; }
+  .nav-badge { width: 38px; height: 38px; background: var(--green); border-radius: 10px; display: flex; align-items: center; justify-content: center; color: white; font-family: 'Space Grotesk', sans-serif; font-weight: 900; font-size: 15px; }
+  .nav-name { font-family: 'Space Grotesk', sans-serif; font-weight: 800; font-size: 17px; color: var(--navy); }
+  .nav-links { display: flex; align-items: center; gap: 28px; }
+  .nav-links a { text-decoration: none; color: var(--gray); font-size: 15px; font-weight: 500; transition: color .2s; }
+  .nav-links a:hover { color: var(--navy); }
+  .nav-cta { background: var(--green) !important; color: white !important; padding: 8px 20px; border-radius: 8px; font-weight: 700 !important; }
+  .nav-cta:hover { background: var(--green-dark) !important; color: white !important; }
+
+  /* HERO */
+  .hero { background: white; padding: 80px 24px 72px; border-bottom: 1px solid var(--border); }
+  .hero-inner { max-width: 1100px; margin: 0 auto; display: grid; grid-template-columns: 1fr 1fr; gap: 64px; align-items: center; }
+  .hero-badge { display: inline-flex; align-items: center; gap: 8px; background: var(--green-light); color: var(--green-dark); padding: 7px 16px; border-radius: 24px; font-size: 13px; font-weight: 700; margin-bottom: 22px; }
+  .hero h1 { font-size: 46px; font-weight: 900; line-height: 1.15; color: var(--navy); margin-bottom: 18px; }
+  .hero h1 span { color: var(--green); }
+  .hero p { font-size: 17px; color: var(--gray); margin-bottom: 34px; line-height: 1.75; max-width: 480px; }
+  .hero-btns { display: flex; gap: 12px; flex-wrap: wrap; }
+  .btn-primary { background: var(--green); color: white; padding: 13px 28px; border-radius: 10px; font-size: 15px; font-weight: 700; text-decoration: none; display: inline-flex; align-items: center; gap: 8px; transition: background .2s, transform .15s; }
+  .btn-primary:hover { background: var(--green-dark); transform: translateY(-2px); }
+  .btn-secondary { background: transparent; color: var(--navy); padding: 13px 28px; border-radius: 10px; border: 1.5px solid var(--border); font-size: 15px; font-weight: 700; text-decoration: none; display: inline-flex; align-items: center; gap: 8px; transition: border-color .2s, transform .15s; }
+  .btn-secondary:hover { border-color: var(--navy); transform: translateY(-2px); }
+
+  /* HERO STATS */
+  .hero-stats { background: var(--bg); border-radius: 20px; padding: 28px; display: grid; grid-template-columns: 1fr 1fr; gap: 14px; }
+  .stat-card { background: white; border-radius: var(--radius); padding: 22px 18px; text-align: center; border: 1px solid var(--border); }
+  .stat-num { font-family: 'Space Grotesk', sans-serif; font-size: 32px; font-weight: 900; color: var(--navy); display: block; }
+  .stat-num.accent { color: var(--green); }
+  .stat-label { font-size: 13px; color: var(--gray); font-weight: 500; }
+
+  /* SIGNATURE: PHONE MOCKUP */
+  .phone-stage { position: relative; display: flex; align-items: center; justify-content: center; padding: 30px 0; }
+  .phone-frame { width: 250px; height: 510px; background: var(--navy); border-radius: 38px; padding: 12px; box-shadow: 0 30px 60px -15px rgba(26,26,46,0.35), 0 0 0 1px rgba(26,26,46,0.05); position: relative; z-index: 2; }
+  .phone-notch { position: absolute; top: 12px; left: 50%; transform: translateX(-50%); width: 90px; height: 22px; background: var(--navy); border-radius: 0 0 14px 14px; z-index: 3; }
+  .phone-screen { width: 100%; height: 100%; background: linear-gradient(165deg, #EAF7EC 0%, #F8F9FA 55%); border-radius: 28px; overflow: hidden; padding: 38px 16px 16px; display: flex; flex-direction: column; }
+  .phone-store-bar { background: white; border-radius: 10px; padding: 9px 12px; font-size: 11px; color: var(--gray); font-weight: 600; display: flex; align-items: center; gap: 6px; margin-bottom: 16px; box-shadow: 0 1px 4px rgba(0,0,0,0.05); }
+  .phone-store-label { font-size: 10px; font-weight: 800; color: var(--green-dark); text-transform: uppercase; letter-spacing: 1px; margin-bottom: 10px; }
+  .phone-app-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 14px; }
+  .phone-app { display: flex; flex-direction: column; align-items: center; gap: 5px; }
+  .phone-app-icon { width: 46px; height: 46px; border-radius: 13px; display: flex; align-items: center; justify-content: center; font-size: 21px; box-shadow: 0 3px 8px rgba(0,0,0,0.15); }
+  .phone-app-name { font-size: 8.5px; font-weight: 700; color: var(--navy); text-align: center; }
+  .float-badge { position: absolute; background: white; border-radius: 12px; padding: 10px 14px; box-shadow: 0 8px 24px rgba(0,0,0,0.12); display: flex; align-items: center; gap: 8px; z-index: 3; animation: floaty 4s ease-in-out infinite; }
+  .float-badge-1 { top: 12%; left: -8%; animation-delay: 0s; }
+  .float-badge-2 { bottom: 16%; right: -10%; animation-delay: 1.2s; }
+  .float-badge-icon { width: 28px; height: 28px; border-radius: 8px; display: flex; align-items: center; justify-content: center; font-size: 14px; flex-shrink: 0; }
+  .float-badge-text { display: flex; flex-direction: column; }
+  .float-badge-num { font-family: 'Space Grotesk', sans-serif; font-weight: 800; font-size: 15px; color: var(--navy); line-height: 1.1; }
+  .float-badge-label { font-size: 10px; color: var(--gray); font-weight: 600; }
+  .phone-glow { position: absolute; width: 340px; height: 340px; background: radial-gradient(circle, rgba(67,160,71,0.18) 0%, transparent 70%); z-index: 1; }
+  @keyframes floaty { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-8px); } }
+  @media (prefers-reduced-motion: reduce) { .float-badge { animation: none; } }
+
+  /* TECH STRIP */
+  .tech-strip { background: white; border-bottom: 1px solid var(--border); padding: 28px 24px; }
+  .tech-inner { max-width: 1100px; margin: 0 auto; }
+  .tech-label { font-size: 12px; font-weight: 700; color: var(--gray); text-transform: uppercase; letter-spacing: 1.2px; margin-bottom: 14px; }
+  .tech-pills { display: flex; flex-wrap: wrap; gap: 10px; }
+  .tech-pill { display: flex; align-items: center; gap: 8px; background: var(--bg); border: 1px solid var(--border); border-radius: 8px; padding: 8px 16px; font-size: 14px; font-weight: 600; color: var(--navy); transition: border-color .2s; }
+  .tech-pill:hover { border-color: var(--green); }
+
+  /* SECTION */
+  .section { padding: 72px 24px; }
+  .section-inner { max-width: 1100px; margin: 0 auto; }
+  .section-header { margin-bottom: 40px; }
+  .section-tag { font-size: 12px; font-weight: 800; color: var(--green); text-transform: uppercase; letter-spacing: 1.8px; margin-bottom: 8px; }
+  .section-title { font-size: 36px; font-weight: 900; color: var(--navy); margin-bottom: 10px; }
+  .section-desc { font-size: 16px; color: var(--gray); }
+
+  /* FILTER TABS */
+  .filter-tabs { display: flex; gap: 8px; margin-bottom: 32px; flex-wrap: wrap; }
+  .filter-tab { padding: 9px 22px; border-radius: 9px; border: 1.5px solid var(--border); background: white; font-size: 14px; font-weight: 700; color: var(--gray); cursor: pointer; transition: all .2s; font-family: 'Inter', sans-serif; }
+  .filter-tab.active { background: var(--green); border-color: var(--green); color: white; }
+  .filter-tab:hover:not(.active) { border-color: #aaa; color: var(--navy); }
+
+  /* PROJECT GRID */
+  .project-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(290px, 1fr)); gap: 20px; }
+  .project-card { background: white; border-radius: var(--radius); border: 1px solid var(--border); overflow: hidden; cursor: pointer; transition: transform .2s, box-shadow .2s; }
+  .project-card:hover { transform: translateY(-5px); box-shadow: var(--shadow); }
+  .card-banner { height: 128px; display: flex; align-items: center; justify-content: center; position: relative; }
+  .app-icon { width: 84px; height: 84px; border-radius: var(--radius-icon); display: flex; align-items: center; justify-content: center; font-size: 38px; border: 3px solid rgba(255,255,255,0.85); box-shadow: 0 4px 18px rgba(0,0,0,0.18); overflow: hidden; }
+  .app-icon img { width: 100%; height: 100%; object-fit: cover; border-radius: var(--radius-icon); }
+  .type-badge { position: absolute; top: 12px; right: 12px; padding: 4px 10px; border-radius: 6px; font-size: 11px; font-weight: 800; text-transform: uppercase; letter-spacing: .4px; }
+  .badge-game { background: #FFF3E0; color: #E65100; }
+  .badge-app  { background: #E3F2FD; color: #0D47A1; }
+  .card-body { padding: 16px; }
+  .card-name { font-family: 'Space Grotesk', sans-serif; font-size: 17px; font-weight: 900; color: var(--navy); margin-bottom: 3px; }
+  .card-category { font-size: 13px; color: var(--gray); margin-bottom: 10px; }
+  .card-rating { display: flex; align-items: center; gap: 6px; margin-bottom: 12px; }
+  .stars { display: flex; gap: 2px; }
+  .star { color: #FFC107; font-size: 14px; }
+  .star.empty { color: #DDD; }
+  .rating-val { font-size: 13px; font-weight: 700; color: var(--navy); }
+  .rating-cnt { font-size: 12px; color: var(--gray); }
+  .card-tags { display: flex; flex-wrap: wrap; gap: 6px; margin-bottom: 14px; }
+  .card-price { font-family: 'Space Grotesk', sans-serif; font-weight: 800; font-size: 16px; color: var(--green-dark); }
+  .tag { background: var(--bg); border: 1px solid var(--border); border-radius: 6px; padding: 3px 10px; font-size: 12px; font-weight: 600; color: var(--gray); }
+  .card-footer { display: flex; align-items: center; justify-content: space-between; padding-top: 12px; border-top: 1px solid var(--border); }
+  .card-dl { font-size: 13px; color: var(--gray); }
+  .card-btn { background: var(--green); color: white; padding: 7px 18px; border-radius: 8px; font-size: 13px; font-weight: 700; border: none; cursor: pointer; font-family: 'Inter', sans-serif; transition: background .2s; }
+  .card-btn:hover { background: var(--green-dark); }
+
+  /* MODAL OVERLAY */
+  .modal-overlay { position: fixed; inset: 0; background: rgba(10,10,30,.75); z-index: 1000; display: flex; align-items: center; justify-content: center; padding: 20px; opacity: 0; visibility: hidden; transition: opacity .3s; }
+  .modal-overlay.open { opacity: 1; visibility: visible; }
+  .modal { background: white; border-radius: 22px; max-width: 740px; width: 100%; max-height: 90vh; overflow-y: auto; transform: translateY(20px) scale(.97); transition: transform .3s; }
+  .modal-overlay.open .modal { transform: translateY(0) scale(1); }
+  .modal::-webkit-scrollbar { width: 5px; }
+  .modal::-webkit-scrollbar-thumb { background: var(--border); border-radius: 3px; }
+  .modal-header { padding: 22px 24px; display: flex; align-items: center; gap: 16px; border-bottom: 1px solid var(--border); position: sticky; top: 0; background: white; z-index: 10; border-radius: 22px 22px 0 0; }
+  .modal-icon { width: 64px; height: 64px; border-radius: 16px; display: flex; align-items: center; justify-content: center; font-size: 30px; flex-shrink: 0; overflow: hidden; }
+  .modal-icon img { width: 100%; height: 100%; object-fit: cover; border-radius: 16px; }
+  .modal-title-group { flex: 1; }
+  .modal-name { font-family: 'Space Grotesk', sans-serif; font-size: 22px; font-weight: 900; color: var(--navy); }
+  .modal-sub { font-size: 14px; color: var(--gray); margin-top: 2px; }
+  .modal-close { width: 36px; height: 36px; border-radius: 50%; border: 1.5px solid var(--border); background: transparent; cursor: pointer; font-size: 18px; color: var(--gray); display: flex; align-items: center; justify-content: center; transition: background .2s; flex-shrink: 0; }
+  .modal-close:hover { background: var(--bg); }
+  .modal-body { padding: 24px; }
+  .modal-sec-title { font-family: 'Space Grotesk', sans-serif; font-size: 15px; font-weight: 800; color: var(--navy); margin-bottom: 14px; }
+  .video-wrap { width: 100%; aspect-ratio: 16/9; border-radius: 12px; overflow: hidden; background: #000; margin-bottom: 22px; }
+  .video-wrap iframe, .video-wrap video { width: 100%; height: 100%; border: none; object-fit: contain; background: #000; }
+  .no-video { width: 100%; aspect-ratio: 16/9; border-radius: 12px; background: var(--bg); border: 2px dashed var(--border); display: flex; flex-direction: column; align-items: center; justify-content: center; color: var(--gray); gap: 8px; margin-bottom: 22px; }
+  .modal-desc { font-size: 15px; color: #374151; line-height: 1.75; margin-bottom: 22px; }
+  .shots-grid { display: grid; grid-template-columns: repeat(3,1fr); gap: 10px; margin-bottom: 22px; }
+  .shot { aspect-ratio: 9/16; border-radius: 10px; overflow: hidden; background: var(--bg); border: 1px solid var(--border); }
+  .shot img { width: 100%; height: 100%; object-fit: cover; }
+  .modal-tags { display: flex; flex-wrap: wrap; gap: 8px; }
+  .modal-price-box { background: var(--green-light); border-radius: 12px; padding: 14px 18px; display: flex; align-items: center; justify-content: space-between; margin-bottom: 22px; }
+  .modal-price-label { font-size: 13px; color: var(--green-dark); font-weight: 700; }
+  .modal-price-value { font-family: 'Space Grotesk', sans-serif; font-size: 22px; font-weight: 800; color: var(--green-dark); }
+  .modal-tag { background: var(--green-light); color: var(--green-dark); padding: 6px 14px; border-radius: 7px; font-size: 13px; font-weight: 700; }
+
+  /* SERVICES */
+  .services-section { background: white; }
+  .services-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(290px, 1fr)); gap: 20px; }
+  .service-card { background: var(--bg); border-radius: var(--radius); padding: 28px; border: 1.5px solid var(--border); transition: border-color .2s, transform .2s; }
+  .service-card:hover { border-color: var(--green); transform: translateY(-3px); }
+  .svc-icon { width: 52px; height: 52px; background: var(--green-light); border-radius: 14px; display: flex; align-items: center; justify-content: center; font-size: 26px; margin-bottom: 18px; }
+  .svc-name { font-family: 'Space Grotesk', sans-serif; font-size: 18px; font-weight: 900; color: var(--navy); margin-bottom: 8px; }
+  .svc-desc { font-size: 14px; color: var(--gray); line-height: 1.65; margin-bottom: 16px; }
+  .svc-tags { display: flex; flex-wrap: wrap; gap: 6px; }
+  .svc-tag { background: white; border: 1px solid var(--border); border-radius: 6px; padding: 3px 10px; font-size: 12px; font-weight: 600; color: var(--gray); }
+
+  /* REVIEWS */
+  .reviews-section { background: var(--bg); }
+  .reviews-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); gap: 20px; }
+  .review-card { background: white; border-radius: var(--radius); padding: 24px; border: 1px solid var(--border); }
+  .review-head { display: flex; align-items: center; justify-content: space-between; margin-bottom: 14px; }
+  .reviewer { display: flex; align-items: center; gap: 12px; }
+  .avatar { width: 42px; height: 42px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-family: 'Space Grotesk', sans-serif; font-weight: 900; font-size: 15px; color: white; flex-shrink: 0; }
+  .rev-name { font-weight: 700; font-size: 15px; color: var(--navy); }
+  .rev-date { font-size: 12px; color: var(--gray); }
+  .bionluk-pill { background: #F5EFFF; color: #7C3AED; padding: 4px 10px; border-radius: 6px; font-size: 11px; font-weight: 800; }
+  .review-stars { margin-bottom: 10px; }
+  .review-text { font-size: 14px; color: #374151; line-height: 1.7; }
+
+  /* CONTACT */
+  .contact-section { background: var(--navy); padding: 80px 24px; }
+  .contact-inner { max-width: 680px; margin: 0 auto; text-align: center; }
+  .contact-title { font-size: 42px; font-weight: 900; color: white; margin-bottom: 16px; }
+  .contact-desc { font-size: 17px; color: rgba(255,255,255,.65); margin-bottom: 42px; line-height: 1.7; }
+  .contact-btns { display: flex; justify-content: center; gap: 16px; flex-wrap: wrap; margin-bottom: 40px; }
+  .wa-btn { background: #25D366; color: white; padding: 14px 32px; border-radius: 12px; font-size: 16px; font-weight: 800; text-decoration: none; display: inline-flex; align-items: center; gap: 10px; transition: background .2s, transform .15s; font-family: 'Inter', sans-serif; }
+  .wa-btn:hover { background: #1EBE5A; transform: translateY(-2px); }
+  .mail-btn { background: rgba(255,255,255,.1); color: white; padding: 14px 32px; border-radius: 12px; font-size: 16px; font-weight: 800; text-decoration: none; display: inline-flex; align-items: center; gap: 10px; border: 1.5px solid rgba(255,255,255,.25); transition: background .2s, transform .15s; font-family: 'Inter', sans-serif; }
+  .mail-btn:hover { background: rgba(255,255,255,.18); transform: translateY(-2px); }
+  .contact-meta { display: flex; justify-content: center; gap: 32px; flex-wrap: wrap; }
+  .contact-meta-item { font-size: 14px; color: rgba(255,255,255,.5); display: flex; align-items: center; gap: 7px; }
+
+  /* FOOTER */
+  footer { background: #0F0F1E; color: rgba(255,255,255,.35); text-align: center; padding: 20px; font-size: 13px; }
+
+  /* FLOATING WA */
+  .float-wa { position: fixed; bottom: 28px; right: 28px; width: 58px; height: 58px; background: #25D366; border-radius: 50%; display: flex; align-items: center; justify-content: center; box-shadow: 0 4px 22px rgba(37,211,102,.45); z-index: 999; text-decoration: none; transition: transform .2s, box-shadow .2s; }
+  .float-wa:hover { transform: scale(1.12); box-shadow: 0 6px 30px rgba(37,211,102,.55); }
+  .float-wa svg { width: 30px; height: 30px; fill: white; }
+
+  /* FADE IN */
+  .fade-in { opacity: 0; transform: translateY(24px); transition: opacity .55s ease, transform .55s ease; }
+  .fade-in.visible { opacity: 1; transform: translateY(0); }
+
+  /* RESPONSIVE */
+  @media (max-width: 800px) {
+    .hero-inner { grid-template-columns: 1fr; }
+    .hero h1 { font-size: 34px; }
+    .phone-stage { display: none; }
+    .section-title { font-size: 28px; }
+    .nav-links { display: none; }
+    .contact-title { font-size: 30px; }
+    .shots-grid { grid-template-columns: repeat(2,1fr); }
+  }
+</style>
+</head>
+<body>
+
+<!-- ===================== NAV ===================== -->
+<nav>
+  <div class="nav-inner">
+    <a href="#" class="nav-logo">
+      <div class="nav-badge">FK</div>
+      <span class="nav-name">Furkan Kuş</span>
+    </a>
+    <div class="nav-links">
+      <a href="#portfolio">Portföy</a>
+      <a href="#services">Hizmetler</a>
+      <a href="https://wa.me/905334007640" target="_blank" class="nav-cta">İletişim</a>
+    </div>
+  </div>
+</nav>
+
+<!-- ===================== HERO ===================== -->
+<section class="hero">
+  <div class="hero-inner">
+    <div>
+      <div class="hero-badge">🎮 Oyun &amp; Uygulama Geliştirici</div>
+      <h1>Hayalinizdeki Projeyi<br><span>Birlikte Yapalım</span></h1>
+      <p>Unity ve Android Studio ile profesyonel mobil oyunlar ve uygulamalar geliştiriyorum. Bionluk üzerinde güvenilir, hızlı ve kaliteli hizmet sunuyorum.</p>
+      <div class="hero-btns">
+        <a href="https://wa.me/905334007640" target="_blank" class="btn-primary">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="white"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347z"/><path d="M12.004 0C5.374 0 0 5.373 0 12c0 2.126.555 4.122 1.527 5.849L.057 23.886l6.224-1.633A11.945 11.945 0 0012.004 24C18.628 24 24 18.627 24 12c0-6.628-5.372-12-11.996-12zM12 21.818c-1.854 0-3.579-.498-5.063-1.369l-.363-.214-3.761.987.999-3.658-.236-.374A9.781 9.781 0 012.2 12c0-5.414 4.407-9.818 9.8-9.818 5.394 0 9.8 4.404 9.8 9.818S17.394 21.818 12 21.818z"/></svg>
+          WhatsApp'tan Yaz
+        </a>
+        <a href="#portfolio" class="btn-secondary">Portföyü Gör →</a>
+      </div>
+    </div>
+    <div class="phone-stage">
+      <div class="phone-glow"></div>
+      <div class="float-badge float-badge-1">
+        <div class="float-badge-icon" style="background:#E8F5E9">🚀</div>
+        <div class="float-badge-text"><span class="float-badge-num" id="stat-projects">9+</span><span class="float-badge-label">Yayınlanan Proje</span></div>
+      </div>
+      <div class="phone-frame">
+        <div class="phone-notch"></div>
+        <div class="phone-screen">
+          <div class="phone-store-bar">🔍 Furkan Kuş ara...</div>
+          <div class="phone-store-label">Geliştirici Profili</div>
+          <div class="phone-app-grid">
+            <div class="phone-app"><div class="phone-app-icon" style="background:#FF6B6B">🍓</div><span class="phone-app-name">Fruit Mania</span></div>
+            <div class="phone-app"><div class="phone-app-icon" style="background:#00BCD4">⚡</div><span class="phone-app-name">ZigZag</span></div>
+            <div class="phone-app"><div class="phone-app-icon" style="background:#FF7043">🐱</div><span class="phone-app-name">Cat Run</span></div>
+            <div class="phone-app"><div class="phone-app-icon" style="background:#7C4DFF">👽</div><span class="phone-app-name">Escape</span></div>
+            <div class="phone-app"><div class="phone-app-icon" style="background:#4CAF50">📊</div><span class="phone-app-name">App 1</span></div>
+            <div class="phone-app"><div class="phone-app-icon" style="background:#2196F3">💪</div><span class="phone-app-name">App 2</span></div>
+          </div>
+        </div>
+      </div>
+      <div class="float-badge float-badge-2">
+        <div class="float-badge-icon" style="background:#FFF3E0">⭐</div>
+        <div class="float-badge-text"><span class="float-badge-num">5.0</span><span class="float-badge-label">Bionluk Puanı</span></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ===================== TECH STRIP ===================== -->
+<div class="tech-strip">
+  <div class="tech-inner">
+    <p class="tech-label">Kullandığım Teknolojiler</p>
+    <div class="tech-pills">
+      <div class="tech-pill">🎮 Unity</div>
+      <div class="tech-pill">🤖 Android Studio</div>
+      <div class="tech-pill">📱 Java / Kotlin</div>
+      <div class="tech-pill">🎨 C#</div>
+      <div class="tech-pill">💰 AdMob</div>
+      <div class="tech-pill">🔥 Firebase</div>
+      <div class="tech-pill">🏪 Google Play</div>
+    </div>
+  </div>
+</div>
+
+<!-- ===================== PORTFOLIO ===================== -->
+<section class="section" id="portfolio">
+  <div class="section-inner">
+    <div class="section-header">
+      <p class="section-tag">Portföy</p>
+      <h2 class="section-title">Portfolyomdaki Oyunlar ve Uygulamalar</h2>
+      <p class="section-desc">Geliştirdiğim ve portfolyomda yer alan oyun ile uygulamalar.</p>
+    </div>
+    <div class="filter-tabs">
+      <button class="filter-tab active" onclick="filterProjects('all', this)">🔲 Tümü</button>
+      <button class="filter-tab" onclick="filterProjects('game', this)">🎮 Oyunlar</button>
+      <button class="filter-tab" onclick="filterProjects('app', this)">📱 Uygulamalar</button>
+    </div>
+    <div class="project-grid" id="project-grid"></div>
+  </div>
+</section>
+
+<!-- ===================== SERVICES ===================== -->
+<section class="section services-section" id="services">
+  <div class="section-inner">
+    <div class="section-header">
+      <p class="section-tag">Hizmetler</p>
+      <h2 class="section-title">Neler Yapıyorum?</h2>
+      <p class="section-desc">İhtiyacınıza göre özelleştirilmiş çözümler sunuyorum.</p>
+    </div>
+    <div class="services-grid">
+      <div class="service-card fade-in">
+        <div class="svc-icon">🎮</div>
+        <div class="svc-name">Oyun Geliştirme</div>
+        <div class="svc-desc">Unity ile 2D/3D mobil oyunlar. Arcade, puzzle, hyper-casual türlerde Play Store'a hazır, AdMob entegreli oyunlar.</div>
+        <div class="svc-tags"><span class="svc-tag">Unity</span><span class="svc-tag">C#</span><span class="svc-tag">2D / 3D</span><span class="svc-tag">Hyper-Casual</span></div>
+      </div>
+      <div class="service-card fade-in">
+        <div class="svc-icon">📱</div>
+        <div class="svc-name">Android Uygulama</div>
+        <div class="svc-desc">Android Studio ile Java/Kotlin tabanlı native uygulamalar. Modern Material Design arayüzü ve güçlü backend entegrasyonu.</div>
+        <div class="svc-tags"><span class="svc-tag">Android Studio</span><span class="svc-tag">Kotlin</span><span class="svc-tag">Java</span><span class="svc-tag">Material Design</span></div>
+      </div>
+      <div class="service-card fade-in">
+        <div class="svc-icon">💰</div>
+        <div class="svc-name">AdMob Entegrasyonu</div>
+        <div class="svc-desc">Mevcut oyun veya uygulamanıza Google AdMob reklam entegrasyonu. Banner, interstitial ve rewarded reklam formatları.</div>
+        <div class="svc-tags"><span class="svc-tag">AdMob</span><span class="svc-tag">Banner</span><span class="svc-tag">Rewarded</span><span class="svc-tag">Monetizasyon</span></div>
+      </div>
+      <div class="service-card fade-in">
+        <div class="svc-icon">🏪</div>
+        <div class="svc-name">Play Store Yayımlama</div>
+        <div class="svc-desc">Uygulamanızı Google Play Store'a yüklüyorum. İkon, açıklama, ekran görüntüleri ve ASO optimizasyonu dahil.</div>
+        <div class="svc-tags"><span class="svc-tag">Google Play</span><span class="svc-tag">ASO</span><span class="svc-tag">Yayımlama</span></div>
+      </div>
+      <div class="service-card fade-in">
+        <div class="svc-icon">🔧</div>
+        <div class="svc-name">Bug Fix &amp; Güncelleme</div>
+        <div class="svc-desc">Mevcut Android oyun veya uygulamanızdaki hataları düzeltiyorum, yeni özellikler ekliyor ve güncel SDK'ya taşıyorum.</div>
+        <div class="svc-tags"><span class="svc-tag">Hata Düzeltme</span><span class="svc-tag">SDK Güncelleme</span><span class="svc-tag">Optimizasyon</span></div>
+      </div>
+      <div class="service-card fade-in">
+        <div class="svc-icon">🔥</div>
+        <div class="svc-name">Firebase Entegrasyonu</div>
+        <div class="svc-desc">Authentication, Realtime Database, Firestore, Cloud Messaging ve Analytics entegrasyonu. Güçlü bulut backend çözümleri.</div>
+        <div class="svc-tags"><span class="svc-tag">Firebase</span><span class="svc-tag">Auth</span><span class="svc-tag">Firestore</span><span class="svc-tag">Realtime DB</span></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+
+
+<!-- ===================== CONTACT ===================== -->
+<section class="contact-section" id="contact">
+  <div class="contact-inner">
+    <h2 class="contact-title">Projenizi Konuşalım</h2>
+    <p class="contact-desc">Yeni bir oyun veya uygulama fikriniz mi var? WhatsApp üzerinden hızlıca iletişime geçin, fiyat teklifi alın.</p>
+    <div class="contact-btns">
+      <a href="https://wa.me/905334007640" target="_blank" class="wa-btn">
+        <svg width="22" height="22" viewBox="0 0 24 24" fill="white"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347z"/><path d="M12.004 0C5.374 0 0 5.373 0 12c0 2.126.555 4.122 1.527 5.849L.057 23.886l6.224-1.633A11.945 11.945 0 0012.004 24C18.628 24 24 18.627 24 12c0-6.628-5.372-12-11.996-12zM12 21.818c-1.854 0-3.579-.498-5.063-1.369l-.363-.214-3.761.987.999-3.658-.236-.374A9.781 9.781 0 012.2 12c0-5.414 4.407-9.818 9.8-9.818 5.394 0 9.8 4.404 9.8 9.818S17.394 21.818 12 21.818z"/></svg>
+        WhatsApp'tan Yaz
+      </a>
+      <a href="mailto:furkansgames1907@gmail.com" class="mail-btn">✉️ E-posta Gönder</a>
+    </div>
+    <div class="contact-meta">
+      <div class="contact-meta-item">📞 +90 533 400 76 40</div>
+      <div class="contact-meta-item">✉️ furkansgames1907@gmail.com</div>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <p>© 2025 Furkan Kuş — Oyun &amp; Uygulama Geliştirici | Tüm Hakları Saklıdır</p>
+</footer>
+
+<!-- FLOATING WHATSAPP -->
+<a href="https://wa.me/905334007640" target="_blank" class="float-wa" title="WhatsApp ile iletişime geç">
+  <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347z"/><path d="M12.004 0C5.374 0 0 5.373 0 12c0 2.126.555 4.122 1.527 5.849L.057 23.886l6.224-1.633A11.945 11.945 0 0012.004 24C18.628 24 24 18.627 24 12c0-6.628-5.372-12-11.996-12zM12 21.818c-1.854 0-3.579-.498-5.063-1.369l-.363-.214-3.761.987.999-3.658-.236-.374A9.781 9.781 0 012.2 12c0-5.414 4.407-9.818 9.8-9.818 5.394 0 9.8 4.404 9.8 9.818S17.394 21.818 12 21.818z"/></svg>
+</a>
+
+<!-- MODAL -->
+<div class="modal-overlay" id="modal-overlay" onclick="closeModalBg(event)">
+  <div class="modal" id="modal">
+    <div class="modal-header">
+      <div class="modal-icon" id="modal-icon"></div>
+      <div class="modal-title-group">
+        <div class="modal-name" id="modal-name"></div>
+        <div class="modal-sub" id="modal-sub"></div>
+      </div>
+      <button class="modal-close" onclick="closeModal()">✕</button>
+    </div>
+    <div class="modal-body">
+      <div id="modal-video"></div>
+      <div id="modal-price"></div>
+      <p class="modal-desc" id="modal-desc"></p>
+      <div id="modal-shots"></div>
+      <div id="modal-tags"></div>
+    </div>
+  </div>
+</div>
+
+<script>
+// ================================================================
+// 🎮 PROJELERİ BURAYA EKLEYİN / DÜZENLEYİN
+// ================================================================
+// videoId: YouTube video ID (URL'den aldığınız kısım: youtube.com/watch?v=BURASI)
+// iconUrl: Gerçek ikon URL'si (boş bırakırsanız emoji kullanılır)
+// screenshots: Ekran görüntüsü URL dizisi ['url1', 'url2', 'url3']
+// downloads: İndirme sayısı metni
+// ================================================================
+const projects = [
+  {
+    id: 1,
+    type: 'game',
+    iconBg: '#4CAF50',
+    iconEmoji: '🍓',
+    iconUrl: 'data:image/jpeg;base64,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',
+    name: 'Fruit Mania',
+    tagline: 'Match-3 Puzzle Oyunu',
+    category: 'Puzzle / Match-3',
+    description: 'Candy Crush tarzı klasik bir match-3 puzzle oyunu. 100 bölümden oluşan zengin bir içerik sunar. Renkli meyveleri eşleştirerek sıraları temizleyin, özel güçlendirmeleri kullanın. Unity ile geliştirilmiş, uygulama içi satın alma ve AdMob reklam entegrasyonlu tam özellikli bir mobil oyundur.',
+    videoFile: 'videos/fruitsManiaRecord.mp4',
+    screenshots: [],
+    tags: ['Unity', 'C#', 'AdMob', 'Match-3', '100 Bölüm', 'Uygulama İçi Satın Alma'],
+    price: '5.000 ₺'
+  },
+  {
+    id: 7,
+    type: 'game',
+    iconBg: '#00BCD4',
+    iconEmoji: '⚡',
+    iconUrl: '',
+    name: 'ZigZag Game',
+    tagline: 'Hyper-Casual Oyun',
+    category: 'Hyper-Casual',
+    description: 'Tek dokunuşla kontrol edilen, hızlı tempolu bir zigzag yön değiştirme oyunu. Basit ama bağımlılık yapan oynanış mekaniği, Unity ile geliştirilmiş ve AdMob reklam entegrasyonu içerir.',
+    videoFile: 'videos/ZigZagRecord.mp4',
+    screenshots: [],
+    tags: ['Unity', 'C#', 'AdMob', 'Hyper-Casual']
+  },
+  {
+    id: 8,
+    type: 'game',
+    iconBg: '#FF7043',
+    iconEmoji: '🐱',
+    iconUrl: '',
+    name: 'Cat Run',
+    tagline: 'Platform Koşu Oyunu',
+    category: 'Platformer / Endless Runner',
+    description: 'Sevimli bir kedi karakteriyle engelleri aşıp koşulan 2D platform oyunu. Unity ile geliştirilmiş akıcı animasyonlar, çeşitli engeller ve seviye tasarımı içerir.',
+    videoFile: 'videos/readyPlatform2d.mp4',
+    screenshots: [],
+    tags: ['Unity', 'C#', '2D Platformer', 'AdMob']
+  },
+  {
+    id: 9,
+    type: 'game',
+    iconBg: '#7C4DFF',
+    iconEmoji: '👽',
+    iconUrl: '',
+    name: 'Escape The Aliens',
+    tagline: 'Arcade Kaçış Oyunu',
+    category: 'Arcade',
+    description: 'Uzaylılardan kaçarak hayatta kalmaya çalıştığınız hızlı tempolu bir arcade oyunu. Unity ile geliştirilmiş, basit kontroller ve giderek zorlaşan zorluk seviyesi sunar.',
+    videoFile: 'videos/EscapeTheAliens.mp4',
+    screenshots: [],
+    tags: ['Unity', 'C#', 'Arcade', 'AdMob']
+  },
+  {
+    id: 2,
+    type: 'app',
+    iconBg: '#4CAF50',
+    iconEmoji: '📊',
+    iconUrl: '',
+    name: 'Örnek Uygulama 1',
+    tagline: 'Android Uygulaması',
+    category: 'Verimlilik',
+    description: 'Uygulamanızın açıklamasını buraya yazın. Hangi teknolojilerle yapıldığını, özelliklerini ve kullanıcıya kattığı değeri anlatan birkaç cümle ekleyin.',
+    videoId: '',
+    screenshots: [],
+    tags: ['Android Studio', 'Kotlin', 'Firebase'],
+    rating: 4.6,
+    downloads: '5K+'
+  },
+  {
+    id: 3,
+    type: 'game',
+    iconBg: '#FF9800',
+    iconEmoji: '🧩',
+    iconUrl: '',
+    name: 'Örnek Oyun 2',
+    tagline: 'Puzzle Oyunu',
+    category: 'Puzzle',
+    description: 'Oyununuzun açıklamasını buraya yazın. Hangi teknolojilerle yapıldığını, özelliklerini ve oynanış mekaniklerini anlatan birkaç cümle ekleyin.',
+    videoId: '',
+    screenshots: [],
+    tags: ['Unity', 'C#', 'AdMob'],
+    rating: 4.7,
+    downloads: '8K+'
+  },
+  {
+    id: 4,
+    type: 'app',
+    iconBg: '#2196F3',
+    iconEmoji: '💪',
+    iconUrl: '',
+    name: 'Örnek Uygulama 2',
+    tagline: 'Android Uygulaması',
+    category: 'Sağlık & Spor',
+    description: 'Uygulamanızın açıklamasını buraya yazın. Hangi teknolojilerle yapıldığını, özelliklerini ve kullanıcıya kattığı değeri anlatan birkaç cümle ekleyin.',
+    videoId: '',
+    screenshots: [],
+    tags: ['Android Studio', 'Java', 'Room DB'],
+    rating: 4.5,
+    downloads: '3K+'
+  },
+  {
+    id: 5,
+    type: 'game',
+    iconBg: '#9C27B0',
+    iconEmoji: '⚡',
+    iconUrl: '',
+    name: 'Örnek Oyun 3',
+    tagline: 'Aksiyon Oyunu',
+    category: 'Aksiyon',
+    description: 'Oyununuzun açıklamasını buraya yazın. Hangi teknolojilerle yapıldığını, özelliklerini ve oynanış mekaniklerini anlatan birkaç cümle ekleyin.',
+    videoId: '',
+    screenshots: [],
+    tags: ['Unity', 'C#', 'AdMob', '2D'],
+    rating: 4.9,
+    downloads: '15K+'
+  },
+  {
+    id: 6,
+    type: 'app',
+    iconBg: '#F44336',
+    iconEmoji: '📝',
+    iconUrl: '',
+    name: 'Örnek Uygulama 3',
+    tagline: 'Android Uygulaması',
+    category: 'Araçlar',
+    description: 'Uygulamanızın açıklamasını buraya yazın. Hangi teknolojilerle yapıldığını, özelliklerini ve kullanıcıya kattığı değeri anlatan birkaç cümle ekleyin.',
+    videoId: '',
+    screenshots: [],
+    tags: ['Android Studio', 'Kotlin', 'Firebase'],
+    rating: 4.4,
+    downloads: '2K+'
+  }
+];
+
+// ================================================================
+// 🌟 BIONLUK YORUMLARINI BURAYA EKLEYİN / DÜZENLEYİN
+// ================================================================
+const reviews = [
+  {
+    name: 'Mehmet Y.',
+    initials: 'MY',
+    avatarBg: '#FF6B6B',
+    date: 'Mayıs 2025',
+    rating: 5,
+    text: 'Çok profesyonel ve hızlı çalışıyor. Oyunumu tam istediğim gibi geliştirdi, AdMob entegrasyonunu da eksiksiz yaptı. Kesinlikle tavsiye ederim!'
+  },
+  {
+    name: 'Ayşe K.',
+    initials: 'AK',
+    avatarBg: '#4CAF50',
+    date: 'Nisan 2025',
+    rating: 5,
+    text: 'Android uygulamamı geliştirdi, hem zamanında teslim etti hem de sonrasında destek verdi. Beklentilerimin çok üzerinde bir hizmet aldım.'
+  },
+  {
+    name: 'Emre D.',
+    initials: 'ED',
+    avatarBg: '#2196F3',
+    date: 'Mart 2025',
+    rating: 5,
+    text: 'Unity ile oyun konusunda gerçekten uzman biri. Verdiği fiyata göre kalite inanılmaz. Play Store yayınlama sürecinde de yardımcı oldu.'
+  },
+  {
+    name: 'Zeynep A.',
+    initials: 'ZA',
+    avatarBg: '#9C27B0',
+    date: 'Şubat 2025',
+    rating: 5,
+    text: 'Firebase entegrasyonu yaptırdım, çok hızlı ve sorunsuz tamamlandı. Her aşamada bilgi verdi, iletişim mükemmeldi.'
+  },
+  {
+    name: 'Can T.',
+    initials: 'CT',
+    avatarBg: '#FF9800',
+    date: 'Ocak 2025',
+    rating: 5,
+    text: 'Mevcut oyunumdaki hataları düzeltti, performansı da iyileştirdi. Çok memnun kaldım, tekrar çalışacağım.'
+  },
+  {
+    name: 'Selin B.',
+    initials: 'SB',
+    avatarBg: '#00BCD4',
+    date: 'Aralık 2024',
+    rating: 5,
+    text: 'Hyper-casual oyun geliştirmede çok iyiler. Tasarımdan geliştirmeye, Play Store yayınlamadan AdMob entegrasyonuna kadar her şeyi eksiksiz yaptı.'
+  }
+];
+
+// ================================================================
+// HELPERS
+// ================================================================
+function stars(n) {
+  let s = '<div class="stars">';
+  for (let i = 1; i <= 5; i++) s += `<span class="star${i > n ? ' empty' : ''}">★</span>`;
+  return s + '</div>';
+}
+
+// ================================================================
+// RENDER PROJECTS
+// ================================================================
+function renderProjects(filter) {
+  const list = filter === 'all' ? projects : projects.filter(p => p.type === filter);
+  document.getElementById('stat-projects').textContent = projects.length + '+';
+  document.getElementById('project-grid').innerHTML = list.map(p => `
+    <div class="project-card" onclick="openModal(${p.id})">
+      <div class="card-banner" style="background:linear-gradient(135deg,${p.iconBg}26,${p.iconBg}4d)">
+        <div class="app-icon" style="background:${p.iconBg}">
+          ${p.iconUrl ? `<img src="${p.iconUrl}" alt="${p.name}">` : `<span style="font-size:38px;line-height:1">${p.iconEmoji}</span>`}
+        </div>
+        <div class="type-badge ${p.type === 'game' ? 'badge-game' : 'badge-app'}">
+          ${p.type === 'game' ? '🎮 Oyun' : '📱 Uygulama'}
+        </div>
+      </div>
+      <div class="card-body">
+        <div class="card-name">${p.name}</div>
+        <div class="card-category">${p.category}</div>
+        <div class="card-tags">${p.tags.slice(0,3).map(t => `<span class="tag">${t}</span>`).join('')}</div>
+        <div class="card-footer">
+          ${p.price ? `<span class="card-price">${p.price}</span>` : '<span></span>'}
+          <button class="card-btn">Detaylar →</button>
+        </div>
+      </div>
+    </div>
+  `).join('');
+}
+
+function filterProjects(type, btn) {
+  document.querySelectorAll('.filter-tab').forEach(t => t.classList.remove('active'));
+  btn.classList.add('active');
+  renderProjects(type);
+}
+
+// ================================================================
+// RENDER REVIEWS
+// ================================================================
+function renderReviews() {
+  document.getElementById('reviews-grid').innerHTML = reviews.map(r => `
+    <div class="review-card fade-in">
+      <div class="review-head">
+        <div class="reviewer">
+          <div class="avatar" style="background:${r.avatarBg}">${r.initials}</div>
+          <div>
+            <div class="rev-name">${r.name}</div>
+            <div class="rev-date">${r.date}</div>
+          </div>
+        </div>
+        <span class="bionluk-pill">Bionluk ✓</span>
+      </div>
+      <div class="review-stars">${stars(r.rating)}</div>
+      <p class="review-text">${r.text}</p>
+    </div>
+  `).join('');
+}
+
+// ================================================================
+// MODAL
+// ================================================================
+function openModal(id) {
+  const p = projects.find(x => x.id === id);
+  if (!p) return;
+
+  const iconEl = document.getElementById('modal-icon');
+  iconEl.style.background = p.iconBg;
+  iconEl.innerHTML = p.iconUrl
+    ? `<img src="${p.iconUrl}" alt="${p.name}">`
+    : `<span style="font-size:30px;line-height:1">${p.iconEmoji}</span>`;
+
+  document.getElementById('modal-name').textContent = p.name;
+  document.getElementById('modal-sub').textContent = `${p.type === 'game' ? '🎮 Oyun' : '📱 Uygulama'} · ${p.category}`;
+  document.getElementById('modal-desc').textContent = p.description;
+
+  document.getElementById('modal-price').innerHTML = p.price
+    ? `<div class="modal-price-box"><span class="modal-price-label">💰 Geliştirme Bedeli</span><span class="modal-price-value">${p.price}</span></div>`
+    : '';
+
+  document.getElementById('modal-video').innerHTML = p.videoFile
+    ? `<p class="modal-sec-title">🎬 Tanıtım Videosu</p>
+       <div class="video-wrap"><video src="${p.videoFile}" controls playsinline preload="metadata"></video></div>`
+    : p.videoId
+    ? `<p class="modal-sec-title">🎬 Tanıtım Videosu</p>
+       <div class="video-wrap"><iframe src="https://www.youtube.com/embed/${p.videoId}?rel=0" allowfullscreen allow="autoplay"></iframe></div>`
+    : `<div class="no-video"><span style="font-size:36px">🎬</span><span style="font-size:14px;font-weight:600;color:#6B7280">Video Yakında Eklenecek</span></div>`;
+
+  document.getElementById('modal-shots').innerHTML = p.screenshots && p.screenshots.length
+    ? `<p class="modal-sec-title" style="margin-bottom:12px">📸 Ekran Görüntüleri</p>
+       <div class="shots-grid">${p.screenshots.map(u => `<div class="shot"><img src="${u}" alt="screenshot" loading="lazy"></div>`).join('')}</div>`
+    : '';
+
+  document.getElementById('modal-tags').innerHTML = `
+    <p class="modal-sec-title" style="margin-bottom:10px">🏷️ Teknolojiler</p>
+    <div class="modal-tags">${p.tags.map(t => `<span class="modal-tag">${t}</span>`).join('')}</div>`;
+
+  document.getElementById('modal-overlay').classList.add('open');
+  document.body.style.overflow = 'hidden';
+}
+
+function closeModal() {
+  document.getElementById('modal-overlay').classList.remove('open');
+  document.body.style.overflow = '';
+  const iframe = document.querySelector('#modal-video iframe');
+  if (iframe) { const s = iframe.src; iframe.src = ''; iframe.src = s; }
+  const video = document.querySelector('#modal-video video');
+  if (video) { video.pause(); }
+}
+
+function closeModalBg(e) {
+  if (e.target === document.getElementById('modal-overlay')) closeModal();
+}
+
+document.addEventListener('keydown', e => { if (e.key === 'Escape') closeModal(); });
+
+// ================================================================
+// SCROLL ANIMATIONS
+// ================================================================
+const obs = new IntersectionObserver(entries => {
+  entries.forEach(e => { if (e.isIntersecting) e.target.classList.add('visible'); });
+}, { threshold: 0.1 });
+
+// ================================================================
+// INIT
+// ================================================================
+document.addEventListener('DOMContentLoaded', () => {
+  renderProjects('all');
+  setTimeout(() => {
+    document.querySelectorAll('.fade-in').forEach(el => obs.observe(el));
+  }, 200);
+});
+</script>
+</body>
+</html>
