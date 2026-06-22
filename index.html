@@ -176,9 +176,13 @@
 
   /* PROJECT GRID */
   .project-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(290px, 1fr)); gap: 20px; }
-  .project-card { background: white; border-radius: var(--radius); border: 1px solid var(--border); overflow: hidden; cursor: pointer; transition: transform .2s, box-shadow .2s; }
-  .project-card:hover { transform: translateY(-5px); box-shadow: var(--shadow); }
+  .project-card { background: white; border-radius: var(--radius); border: 1px solid var(--border); overflow: hidden; cursor: pointer; transition: transform .25s cubic-bezier(.2,.8,.2,1), box-shadow .25s; }
+  .project-card:hover { transform: translateY(-8px); box-shadow: 0 20px 40px rgba(0,0,0,0.12); }
   .card-banner { height: 168px; display: flex; align-items: center; justify-content: center; position: relative; overflow: hidden; }
+  /* Oyun etiketleri */
+  .game-label { position: absolute; top: 10px; left: 10px; padding: 4px 10px; border-radius: 20px; font-size: 10px; font-weight: 900; text-transform: uppercase; letter-spacing: 0.8px; z-index: 3; }
+  .label-bestseller { background: #F59E0B; color: #fff; box-shadow: 0 2px 8px rgba(245,158,11,0.4); }
+  .label-new { background: #8B5CF6; color: #fff; box-shadow: 0 2px 8px rgba(139,92,246,0.4); }
   .app-icon { width: 124px; height: 124px; border-radius: 28px; display: flex; align-items: center; justify-content: center; font-size: 50px; border: 4px solid rgba(255,255,255,0.95); box-shadow: 0 10px 30px rgba(0,0,0,0.22), 0 2px 8px rgba(0,0,0,0.12); overflow: hidden; transition: transform .3s cubic-bezier(.2,.8,.2,1); position: relative; z-index: 2; }
   .project-card:hover .app-icon { transform: scale(1.06) translateY(-3px); }
   .app-icon img { width: 100%; height: 100%; object-fit: cover; border-radius: 24px; image-rendering: -webkit-optimize-contrast; image-rendering: auto; filter: contrast(1.04) saturate(1.08); }
@@ -608,6 +612,7 @@
       <p class="modal-desc" id="modal-desc"></p>
       <div id="modal-shots"></div>
       <div id="modal-tags"></div>
+      <div id="modal-wa"></div>
     </div>
   </div>
 </div>
@@ -628,7 +633,7 @@ const projects = [
     iconBg: '#4CAF50',
     iconEmoji: '🍓',
     iconUrl: 'data:image/jpeg;base64,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',
-    name: 'Fruit Mania',
+    label: 'bestseller', name: 'Fruit Mania',
     tagline: 'Match-3 Puzzle Oyunu',
     category: 'Puzzle / Match-3',
     description: 'Candy Crush tarzı klasik bir match-3 puzzle oyunu. 100 bölümden oluşan zengin bir içerik sunar. Renkli meyveleri eşleştirerek sıraları temizleyin, özel güçlendirmeleri kullanın. Unity ile geliştirilmiş, uygulama içi satın alma ve AdMob reklam entegrasyonlu tam özellikli bir mobil oyundur.',
@@ -703,7 +708,7 @@ const projects = [
     iconBg: '#FF5722',
     iconEmoji: '🔪',
     iconUrl: 'images/icons/perfect-slice.jpg',
-    name: 'Perfect Slice',
+    label: 'bestseller', name: 'Perfect Slice',
     tagline: 'Refleks Tabanlı Arcade Oyunu',
     category: 'Arcade / Hyper-Casual',
     description: 'Doğru zamanlamayla nesneleri tam ortadan keserek puan topladığınız, hızlı tempolu ve bağımlılık yapan bir refleks oyunu. Her seviye artan hız ve farklı nesne tipleriyle zorluğu yükseltir. Unity ile geliştirilmiş, akıcı animasyonlar ve AdMob reklam entegrasyonu içeren tam özellikli bir mobil oyundur.',
@@ -733,7 +738,7 @@ const projects = [
     iconBg: '#FF6D00',
     iconEmoji: '⚽',
     iconUrl: 'images/icons/fun-goal.jpg',
-    name: 'Fun Goal',
+    label: 'bestseller', name: 'Fun Goal',
     tagline: 'Eğlenceli Futbol Oyunu',
     category: 'Spor / Hyper-Casual',
     description: 'Topu doğru açıyla vurarak gol atmaya çalıştığınız, eğlenceli bir futbol mekaniği sunan hyper-casual oyun. Fizik tabanlı top hareketi, farklı seviye tasarımları ve ödüllü reklamlarla desteklenen bir mobil deneyim. Unity ile geliştirilmiş, AdMob entegrasyonu içerir.',
@@ -763,7 +768,7 @@ const projects = [
     iconBg: '#FF8C42',
     iconEmoji: '🎨',
     iconUrl: 'images/icons/color-bounce.jpg',
-    name: 'Color Bounce',
+    label: 'new', name: 'Color Bounce',
     tagline: 'Renkli Top Zıplatma Oyunu',
     category: 'Arcade / Hyper-Casual',
     description: 'Renkli dönen çembere topun rengini eşleştirerek geçmeye çalıştığınız, refleks ve dikkat gerektiren bağımlılık yapan bir arcade oyunu. Her seviyede hız artar, renkler karmaşıklaşır. Unity ile geliştirilmiş, akıcı animasyonlar, skor sistemi ve AdMob reklam entegrasyonu içerir.',
@@ -848,6 +853,8 @@ function renderProjects(filter) {
     <div class="project-card" onclick="openModal(${p.id})">
       <div class="card-banner" style="${p.bannerImage ? `background-image:linear-gradient(135deg, rgba(10,10,20,.55), rgba(10,10,20,.25)), url('${p.bannerImage}'); background-size:cover; background-position:center;` : `background:linear-gradient(135deg,${p.iconBg}26,${p.iconBg}4d)`}">
         ${p.bannerImage ? '' : `<div class="banner-glow" style="background:radial-gradient(circle, ${p.iconBg}55 0%, transparent 70%)"></div>`}
+        ${p.label === 'bestseller' ? '<div class="game-label label-bestseller">🔥 En Çok Satan</div>' : ''}
+        ${p.label === 'new' ? '<div class="game-label label-new">✨ Yeni</div>' : ''}
         <div class="app-icon" style="background:${p.iconBg}">
           ${p.iconUrl ? `<img src="${p.iconUrl}" alt="${p.name}">` : `<span style="font-size:38px;line-height:1">${p.iconEmoji}</span>`}
         </div>
@@ -861,7 +868,7 @@ function renderProjects(filter) {
         <div class="card-tags">${p.tags.slice(0,3).map(t => `<span class="tag">${t}</span>`).join('')}</div>
         <div class="card-footer">
           ${p.price ? `<span class="card-price">${p.price}</span>` : '<span></span>'}
-          <button class="card-btn">Detaylar →</button>
+          <button class="card-btn" onclick="event.stopPropagation(); openModal(${p.id})">Detaylar →</button>
         </div>
       </div>
     </div>
@@ -919,10 +926,10 @@ function openModal(id) {
 
   document.getElementById('modal-video').innerHTML = p.videoFile
     ? `<p class="modal-sec-title">🎬 Tanıtım Videosu</p>
-       <div class="video-wrap"><video src="${p.videoFile}" controls playsinline preload="metadata"></video></div>`
+       <div class="video-wrap"><video src="${p.videoFile}" controls autoplay muted playsinline preload="auto"></video></div>`
     : p.videoId
     ? `<p class="modal-sec-title">🎬 Tanıtım Videosu</p>
-       <div class="video-wrap"><iframe src="https://www.youtube.com/embed/${p.videoId}?rel=0" allowfullscreen allow="autoplay"></iframe></div>`
+       <div class="video-wrap"><iframe src="https://www.youtube.com/embed/${p.videoId}?rel=0&autoplay=1&mute=1" allowfullscreen allow="autoplay"></iframe></div>`
     : `<div class="no-video"><span style="font-size:36px">🎬</span><span style="font-size:14px;font-weight:600;color:#6B7280">Video Yakında Eklenecek</span></div>`;
 
   document.getElementById('modal-shots').innerHTML = p.screenshots && p.screenshots.length
@@ -936,6 +943,17 @@ function openModal(id) {
 
   document.getElementById('modal-overlay').classList.add('open');
   document.body.style.overflow = 'hidden';
+
+  // WhatsApp butonu - oyun adına göre
+  const waMsg = encodeURIComponent(`Merhaba, ${p.name} oyunu hakkında bilgi almak istiyorum.`);
+  document.getElementById('modal-wa').innerHTML = `
+    <a href="https://wa.me/905334007640?text=${waMsg}" target="_blank"
+       style="display:flex;align-items:center;justify-content:center;gap:10px;background:#25D366;color:white;padding:14px 24px;border-radius:12px;font-size:15px;font-weight:800;text-decoration:none;margin-top:20px;transition:transform .2s,box-shadow .2s;box-shadow:0 6px 20px rgba(37,211,102,0.35);"
+       onmouseover="this.style.transform='translateY(-2px)';this.style.boxShadow='0 10px 28px rgba(37,211,102,0.45)'"
+       onmouseout="this.style.transform='translateY(0)';this.style.boxShadow='0 6px 20px rgba(37,211,102,0.35)'">
+      <svg width="20" height="20" viewBox="0 0 24 24" fill="white"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347z"/><path d="M12.004 0C5.374 0 0 5.373 0 12c0 2.126.555 4.122 1.527 5.849L.057 23.886l6.224-1.633A11.945 11.945 0 0012.004 24C18.628 24 24 18.627 24 12c0-6.628-5.372-12-11.996-12zM12 21.818c-1.854 0-3.579-.498-5.063-1.369l-.363-.214-3.761.987.999-3.658-.236-.374A9.781 9.781 0 012.2 12c0-5.414 4.407-9.818 9.8-9.818 5.394 0 9.8 4.404 9.8 9.818S17.394 21.818 12 21.818z"/></svg>
+      "${p.name}" Hakkında Bilgi Al
+    </a>`;
 }
 
 function closeModal() {
