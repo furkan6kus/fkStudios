@@ -404,7 +404,6 @@
     <div class="filter-tabs">
       <button class="filter-tab active" onclick="filterProjects('all', this)">🔲 Tümü</button>
       <button class="filter-tab" onclick="filterProjects('game', this)">🎮 Oyunlar</button>
-      <button class="filter-tab" onclick="filterProjects('app', this)">📱 Uygulamalar</button>
     </div>
     <div class="project-grid" id="project-grid"></div>
   </div>
@@ -766,7 +765,8 @@ function stars(n) {
 // ================================================================
 function renderProjects(filter) {
   const list = filter === 'all' ? projects : projects.filter(p => p.type === filter);
-  document.getElementById('stat-projects').textContent = projects.length + '+';
+  const statEl = document.getElementById('stat-projects');
+  if (statEl) statEl.textContent = projects.length + '+';
   document.getElementById('project-grid').innerHTML = list.map(p => `
     <div class="project-card" onclick="openModal(${p.id})">
       <div class="card-banner" style="${p.bannerImage ? `background-image:linear-gradient(135deg, rgba(10,10,20,.55), rgba(10,10,20,.25)), url('${p.bannerImage}'); background-size:cover; background-position:center;` : `background:linear-gradient(135deg,${p.iconBg}26,${p.iconBg}4d)`}">
