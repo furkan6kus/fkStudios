@@ -89,6 +89,34 @@
   .phone-app-name { font-size: 10.5px; font-weight: 700; color: #1a1a2e; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
   .phone-app-cat  { font-size: 8.5px; color: #888; font-weight: 500; margin-top: 1px; }
   .phone-app-btn  { background: var(--green); color: #fff; font-size: 8px; font-weight: 800; padding: 4px 8px; border-radius: 20px; flex-shrink: 0; }
+  /* Phone scrollbar indicator */
+  .phone-scroll-bar { position: absolute; right: -10px; top: 50%; transform: translateY(-50%); width: 4px; height: 160px; background: rgba(0,0,0,0.07); border-radius: 4px; z-index: 20; }
+  .phone-scroll-thumb { width: 4px; height: 48px; background: var(--green); border-radius: 4px; animation: scroll-thumb 3s ease-in-out infinite; }
+  @keyframes scroll-thumb { 0%,100% { transform: translateY(0); } 50% { transform: translateY(112px); } }
+  /* CAMPAIGN POPUP */
+  .campaign-overlay { position: fixed; inset: 0; background: rgba(0,0,0,0.72); z-index: 9999; display: flex; align-items: center; justify-content: center; padding: 20px; animation: fadeInOverlay 0.4s ease; }
+  @keyframes fadeInOverlay { from { opacity: 0; } to { opacity: 1; } }
+  .campaign-popup { background: linear-gradient(145deg, #1a1a2e 0%, #16213e 55%, #0f3460 100%); border-radius: 24px; max-width: 560px; width: 100%; padding: 48px 40px 40px; position: relative; text-align: center; box-shadow: 0 40px 100px rgba(0,0,0,0.6); border: 1px solid rgba(255,215,0,0.2); animation: popupIn 0.45s cubic-bezier(.2,.8,.2,1); }
+  @keyframes popupIn { from { opacity: 0; transform: scale(0.88) translateY(20px); } to { opacity: 1; transform: scale(1) translateY(0); } }
+  .campaign-popup-close { position: absolute; top: 16px; right: 20px; background: rgba(255,255,255,0.08); border: none; color: rgba(255,255,255,0.5); font-size: 20px; width: 36px; height: 36px; border-radius: 50%; cursor: pointer; display: flex; align-items: center; justify-content: center; transition: background .2s; }
+  .campaign-popup-close:hover { background: rgba(255,255,255,0.15); color: #fff; }
+  .campaign-popup-fire { font-size: 48px; margin-bottom: 12px; animation: fire-pulse 1.5s ease-in-out infinite; }
+  @keyframes fire-pulse { 0%,100% { transform: scale(1); } 50% { transform: scale(1.12); } }
+  .campaign-popup-tag { display: inline-block; background: rgba(255,200,0,0.15); color: #ffd700; border: 1px solid rgba(255,200,0,0.35); padding: 5px 16px; border-radius: 20px; font-size: 11px; font-weight: 800; text-transform: uppercase; letter-spacing: 1.5px; margin-bottom: 16px; }
+  .campaign-popup-title { font-family: 'Space Grotesk', sans-serif; font-size: 30px; font-weight: 900; color: #fff; margin-bottom: 8px; line-height: 1.2; }
+  .campaign-popup-title span { color: #ffd700; }
+  .campaign-popup-sub { font-size: 15px; color: rgba(255,255,255,0.6); margin-bottom: 28px; }
+  .campaign-popup-prices { display: flex; align-items: center; justify-content: center; gap: 20px; margin-bottom: 28px; }
+  .campaign-popup-old { font-size: 20px; color: rgba(255,255,255,0.3); text-decoration: line-through; }
+  .campaign-popup-new { font-family: 'Space Grotesk', sans-serif; font-size: 48px; font-weight: 900; color: #ffd700; line-height: 1; }
+  .campaign-popup-save { background: rgba(67,160,71,0.2); color: #4caf50; border: 1px solid rgba(67,160,71,0.4); padding: 4px 14px; border-radius: 20px; font-size: 12px; font-weight: 800; }
+  .campaign-popup-features { display: flex; flex-wrap: wrap; justify-content: center; gap: 8px; margin-bottom: 28px; }
+  .campaign-popup-feat { background: rgba(255,255,255,0.07); color: rgba(255,255,255,0.7); font-size: 11px; font-weight: 600; padding: 5px 12px; border-radius: 20px; }
+  .campaign-popup-cta { display: inline-flex; align-items: center; gap: 10px; background: #25D366; color: white; padding: 15px 32px; border-radius: 12px; font-size: 15px; font-weight: 800; text-decoration: none; transition: transform .2s, box-shadow .2s; box-shadow: 0 8px 24px rgba(37,211,102,0.4); width: 100%; justify-content: center; }
+  .campaign-popup-cta:hover { transform: translateY(-2px); box-shadow: 0 14px 32px rgba(37,211,102,0.5); }
+  .campaign-popup-skip { display: block; margin-top: 14px; font-size: 12px; color: rgba(255,255,255,0.3); cursor: pointer; background: none; border: none; }
+  .campaign-popup-skip:hover { color: rgba(255,255,255,0.5); }
+  @media (max-width: 500px) { .campaign-popup { padding: 36px 24px 30px; } .campaign-popup-title { font-size: 24px; } .campaign-popup-new { font-size: 38px; } }
   /* Floating badges */
   .float-badge { position: absolute; background: white; border-radius: 14px; padding: 10px 14px; box-shadow: 0 8px 24px rgba(0,0,0,0.13); display: flex; align-items: center; gap: 8px; z-index: 10; animation: floaty 4s ease-in-out infinite; }
   .float-badge-1 { top: 8%; left: -14%; animation-delay: 0s; }
@@ -268,6 +296,35 @@
 </head>
 <body>
 
+<!-- ===================== CAMPAIGN POPUP ===================== -->
+<div class="campaign-overlay" id="campaign-overlay">
+  <div class="campaign-popup">
+    <button class="campaign-popup-close" onclick="closeCampaign()">✕</button>
+    <div class="campaign-popup-fire">🔥</div>
+    <div class="campaign-popup-tag">⚡ Sınırlı Süre Kampanyası</div>
+    <h2 class="campaign-popup-title">9 Oyunun Tamamı<br><span>Tek Pakette!</span></h2>
+    <p class="campaign-popup-sub">Tüm oyunları birden satın al, büyük tasarruf et.</p>
+    <div class="campaign-popup-prices">
+      <span class="campaign-popup-old">50.500 ₺</span>
+      <div>
+        <div class="campaign-popup-new">40.000 ₺</div>
+        <span class="campaign-popup-save">✓ 10.500 ₺ tasarruf</span>
+      </div>
+    </div>
+    <div class="campaign-popup-features">
+      <span class="campaign-popup-feat">🎮 9 Oyun Kaynak Kodu</span>
+      <span class="campaign-popup-feat">📦 Tek Seferde Teslim</span>
+      <span class="campaign-popup-feat">🚀 Ücretsiz Play Store Yükleme</span>
+      <span class="campaign-popup-feat">🛠 Öncelikli Destek</span>
+    </div>
+    <a href="https://wa.me/905334007640?text=Merhaba,%209%20oyun%20paket%20teklifi%20hakkında%20bilgi%20almak%20istiyorum." target="_blank" class="campaign-popup-cta">
+      <svg width="20" height="20" viewBox="0 0 24 24" fill="white"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347z"/><path d="M12.004 0C5.374 0 0 5.373 0 12c0 2.126.555 4.122 1.527 5.849L.057 23.886l6.224-1.633A11.945 11.945 0 0012.004 24C18.628 24 24 18.627 24 12c0-6.628-5.372-12-11.996-12zM12 21.818c-1.854 0-3.579-.498-5.063-1.369l-.363-.214-3.761.987.999-3.658-.236-.374A9.781 9.781 0 012.2 12c0-5.414 4.407-9.818 9.8-9.818 5.394 0 9.8 4.404 9.8 9.818S17.394 21.818 12 21.818z"/></svg>
+      WhatsApp'tan Teklif Al
+    </a>
+    <button class="campaign-popup-skip" onclick="closeCampaign()">Hayır teşekkürler, geçiyorum →</button>
+  </div>
+</div>
+
 <!-- ===================== NAV ===================== -->
 <nav>
   <div class="nav-inner">
@@ -309,6 +366,7 @@
           <div class="phone-btn-vol"></div>
           <div class="phone-btn-vol2"></div>
           <div class="phone-btn-power"></div>
+          <div class="phone-scroll-bar"><div class="phone-scroll-thumb"></div></div>
           <div class="phone-reflection"></div>
           <div class="phone-notch"></div>
           <div class="phone-screen">
@@ -317,7 +375,6 @@
               <span class="phone-status-icons">▮▮▮ ▶</span>
             </div>
             <div class="phone-header">
-              <div class="phone-store-bar">🔍 Oyun ara...</div>
               <div class="phone-store-label">🎮 Oyunlarım</div>
             </div>
             <div class="phone-app-list">
@@ -889,10 +946,19 @@ const obs = new IntersectionObserver(entries => {
 // ================================================================
 document.addEventListener('DOMContentLoaded', () => {
   renderProjects('all');
+  // Kampanya popup - her açılışta göster
+  document.getElementById('campaign-overlay').style.display = 'flex';
   setTimeout(() => {
     document.querySelectorAll('.fade-in').forEach(el => obs.observe(el));
   }, 200);
 });
+
+function closeCampaign() {
+  const overlay = document.getElementById('campaign-overlay');
+  overlay.style.opacity = '0';
+  overlay.style.transition = 'opacity 0.3s ease';
+  setTimeout(() => overlay.style.display = 'none', 300);
+}
 </script>
 </body>
 </html>
