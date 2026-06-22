@@ -58,26 +58,52 @@
   .stat-num.accent { color: var(--green); }
   .stat-label { font-size: 13px; color: var(--gray); font-weight: 500; }
 
-  /* SIGNATURE: PHONE MOCKUP */
-  .phone-stage { position: relative; display: flex; align-items: center; justify-content: center; padding: 30px 0; }
-  .phone-frame { width: 250px; height: 510px; background: var(--navy); border-radius: 38px; padding: 12px; box-shadow: 0 30px 60px -15px rgba(26,26,46,0.35), 0 0 0 1px rgba(26,26,46,0.05); position: relative; z-index: 2; }
-  .phone-notch { position: absolute; top: 12px; left: 50%; transform: translateX(-50%); width: 90px; height: 22px; background: var(--navy); border-radius: 0 0 14px 14px; z-index: 3; }
-  .phone-screen { width: 100%; height: 100%; background: linear-gradient(165deg, #EAF7EC 0%, #F8F9FA 55%); border-radius: 28px; overflow: hidden; padding: 38px 16px 16px; display: flex; flex-direction: column; }
-  .phone-store-bar { background: white; border-radius: 10px; padding: 9px 12px; font-size: 11px; color: var(--gray); font-weight: 600; display: flex; align-items: center; gap: 6px; margin-bottom: 16px; box-shadow: 0 1px 4px rgba(0,0,0,0.05); }
-  .phone-store-label { font-size: 10px; font-weight: 800; color: var(--green-dark); text-transform: uppercase; letter-spacing: 1px; margin-bottom: 10px; }
-  .phone-app-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 14px; }
-  .phone-app { display: flex; flex-direction: column; align-items: center; gap: 5px; }
-  .phone-app-icon { width: 46px; height: 46px; border-radius: 13px; display: flex; align-items: center; justify-content: center; font-size: 21px; box-shadow: 0 3px 8px rgba(0,0,0,0.15); overflow: hidden; }
-  .phone-app-name { font-size: 8.5px; font-weight: 700; color: var(--navy); text-align: center; }
-  .float-badge { position: absolute; background: white; border-radius: 12px; padding: 10px 14px; box-shadow: 0 8px 24px rgba(0,0,0,0.12); display: flex; align-items: center; gap: 8px; z-index: 3; animation: floaty 4s ease-in-out infinite; }
-  .float-badge-1 { top: 12%; left: -8%; animation-delay: 0s; }
-  .float-badge-2 { bottom: 16%; right: -10%; animation-delay: 1.2s; }
-  .float-badge-icon { width: 28px; height: 28px; border-radius: 8px; display: flex; align-items: center; justify-content: center; font-size: 14px; flex-shrink: 0; }
+  /* SIGNATURE: PHONE MOCKUP 3D */
+  .phone-stage { position: relative; display: flex; align-items: center; justify-content: center; padding: 40px 20px; perspective: 1400px; }
+  .phone-3d-wrapper { position: relative; z-index: 2; transform-style: preserve-3d; transform: rotateY(-18deg) rotateX(6deg); transition: transform 0.7s cubic-bezier(.2,.8,.2,1); animation: phone-float 6s ease-in-out infinite; }
+  .phone-stage:hover .phone-3d-wrapper { transform: rotateY(-6deg) rotateX(2deg); }
+  /* Side face for depth */
+  .phone-side { position: absolute; top: 18px; right: -14px; width: 14px; height: calc(100% - 36px); background: linear-gradient(180deg, #0a0a1a 0%, #111128 100%); border-radius: 0 6px 6px 0; transform: rotateY(90deg) translateZ(7px); transform-origin: left center; }
+  .phone-bottom { position: absolute; bottom: -10px; left: 20px; right: 14px; height: 10px; background: linear-gradient(90deg, #0a0a1a 0%, #16213E 100%); border-radius: 0 0 6px 6px; transform: rotateX(-90deg) translateZ(0px); transform-origin: top center; }
+  .phone-frame { width: 255px; height: 520px; background: linear-gradient(155deg, #2a2a4e 0%, #1A1A2E 40%, #0d0d22 100%); border-radius: 40px; padding: 13px; box-shadow:
+    0 60px 120px -20px rgba(10,10,30,0.7),
+    0 0 0 1.5px rgba(255,255,255,0.10),
+    inset 0 1px 0 rgba(255,255,255,0.08),
+    inset 0 -1px 0 rgba(0,0,0,0.4);
+    position: relative; }
+  /* Side buttons */
+  .phone-btn-vol { position: absolute; left: -3.5px; top: 100px; width: 3.5px; height: 28px; background: linear-gradient(180deg,#2a2a4e,#1a1a3e); border-radius: 3px 0 0 3px; box-shadow: -1px 0 4px rgba(0,0,0,0.4); }
+  .phone-btn-vol2 { position: absolute; left: -3.5px; top: 136px; width: 3.5px; height: 28px; background: linear-gradient(180deg,#2a2a4e,#1a1a3e); border-radius: 3px 0 0 3px; box-shadow: -1px 0 4px rgba(0,0,0,0.4); }
+  .phone-btn-power { position: absolute; right: -3.5px; top: 118px; width: 3.5px; height: 38px; background: linear-gradient(180deg,#2a2a4e,#1a1a3e); border-radius: 0 3px 3px 0; box-shadow: 1px 0 4px rgba(0,0,0,0.4); }
+  .phone-reflection { position: absolute; top: 0; left: 0; right: 0; bottom: 0; border-radius: 40px; background: linear-gradient(135deg, rgba(255,255,255,0.14) 0%, rgba(255,255,255,0.04) 35%, transparent 60%); pointer-events: none; z-index: 4; }
+  .phone-notch { position: absolute; top: 13px; left: 50%; transform: translateX(-50%); width: 88px; height: 24px; background: #0d0d22; border-radius: 0 0 16px 16px; z-index: 5; display: flex; align-items: center; justify-content: center; gap: 6px; }
+  .phone-notch::after { content: ''; width: 8px; height: 8px; background: #1a1a3e; border-radius: 50%; border: 1.5px solid #2a2a5e; }
+  .phone-screen { width: 100%; height: 100%; background: linear-gradient(170deg, #f0faf2 0%, #e8f5ea 40%, #f5f5f5 100%); border-radius: 30px; overflow: hidden; padding: 42px 14px 14px; display: flex; flex-direction: column; }
+  /* Status bar */
+  .phone-status { display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px; padding: 0 2px; }
+  .phone-status-time { font-size: 9px; font-weight: 800; color: var(--navy); }
+  .phone-status-icons { font-size: 8px; color: var(--navy); display: flex; gap: 3px; }
+  /* Search bar */
+  .phone-store-bar { background: white; border-radius: 10px; padding: 7px 10px; font-size: 10px; color: var(--gray); font-weight: 600; display: flex; align-items: center; gap: 5px; margin-bottom: 12px; box-shadow: 0 2px 6px rgba(0,0,0,0.07); }
+  .phone-store-label { font-size: 9.5px; font-weight: 800; color: var(--green-dark); text-transform: uppercase; letter-spacing: 1px; margin-bottom: 10px; }
+  .phone-app-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 11px 10px; overflow-y: auto; max-height: 360px; }
+  .phone-app-grid::-webkit-scrollbar { display: none; }
+  .phone-app { display: flex; flex-direction: column; align-items: center; gap: 4px; }
+  .phone-app-icon { width: 44px; height: 44px; border-radius: 12px; display: flex; align-items: center; justify-content: center; font-size: 21px; box-shadow: 0 4px 10px rgba(0,0,0,0.18), 0 1px 3px rgba(0,0,0,0.1); overflow: hidden; }
+  .phone-app-icon img { width: 100%; height: 100%; object-fit: cover; border-radius: 12px; }
+  .phone-app-name { font-size: 7px; font-weight: 700; color: #1a1a2e; text-align: center; line-height: 1.2; max-width: 44px; }
+  /* Floating badges */
+  .float-badge { position: absolute; background: white; border-radius: 14px; padding: 10px 14px; box-shadow: 0 10px 30px rgba(0,0,0,0.14); display: flex; align-items: center; gap: 8px; z-index: 10; animation: floaty 4s ease-in-out infinite; }
+  .float-badge-1 { top: 10%; left: -12%; animation-delay: 0s; }
+  .float-badge-2 { bottom: 14%; right: -12%; animation-delay: 1.5s; }
+  .float-badge-icon { width: 30px; height: 30px; border-radius: 9px; display: flex; align-items: center; justify-content: center; font-size: 15px; flex-shrink: 0; }
   .float-badge-text { display: flex; flex-direction: column; }
-  .float-badge-num { font-family: 'Space Grotesk', sans-serif; font-weight: 800; font-size: 15px; color: var(--navy); line-height: 1.1; }
+  .float-badge-num { font-family: 'Space Grotesk', sans-serif; font-weight: 800; font-size: 16px; color: var(--navy); line-height: 1.1; }
   .float-badge-label { font-size: 10px; color: var(--gray); font-weight: 600; }
-  .phone-glow { position: absolute; width: 340px; height: 340px; background: radial-gradient(circle, rgba(67,160,71,0.18) 0%, transparent 70%); z-index: 1; }
-  @keyframes floaty { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-8px); } }
+  .phone-glow { position: absolute; width: 440px; height: 440px; background: radial-gradient(circle, rgba(67,160,71,0.25) 0%, rgba(67,160,71,0.08) 45%, transparent 70%); z-index: 1; }
+  @keyframes floaty { 0%, 100% { transform: translateY(0px); } 50% { transform: translateY(-10px); } }
+  @keyframes phone-float { 0%, 100% { transform: rotateY(-18deg) rotateX(6deg) translateY(0px); } 50% { transform: rotateY(-18deg) rotateX(6deg) translateY(-8px); } }
+  .phone-stage:hover .phone-3d-wrapper { animation-play-state: paused; }
   @media (prefers-reduced-motion: reduce) { .float-badge { animation: none; } }
 
   /* TECH STRIP */
@@ -258,22 +284,37 @@
       <div class="phone-glow"></div>
       <div class="float-badge float-badge-1">
         <div class="float-badge-icon" style="background:#E8F5E9">🚀</div>
-        <div class="float-badge-text"><span class="float-badge-num" id="stat-projects">9+</span><span class="float-badge-label">Yayınlanan Proje</span></div>
+        <div class="float-badge-text"><span class="float-badge-num" id="stat-projects">9</span><span class="float-badge-label">Yayınlanan Proje</span></div>
       </div>
-      <div class="phone-frame">
-        <div class="phone-notch"></div>
-        <div class="phone-screen">
-          <div class="phone-store-bar">🔍 Furkan Kuş ara...</div>
-          <div class="phone-store-label">Geliştirici Profili</div>
-          <div class="phone-app-grid">
-            <div class="phone-app"><div class="phone-app-icon" style="background:#FF6B6B"><img src="images/icons/fruit-mania.jpg" alt="Fruit Mania" style="width:100%;height:100%;object-fit:cover;border-radius:13px;"></div><span class="phone-app-name">Fruit Mania</span></div>
-            <div class="phone-app"><div class="phone-app-icon" style="background:#00BCD4"><img src="images/icons/zigzag-game.jpg" alt="ZigZag Game" style="width:100%;height:100%;object-fit:cover;border-radius:13px;"></div><span class="phone-app-name">ZigZag</span></div>
-            <div class="phone-app"><div class="phone-app-icon" style="background:#FF7043"><img src="images/icons/cat-run.jpg" alt="Cat Run" style="width:100%;height:100%;object-fit:cover;border-radius:13px;"></div><span class="phone-app-name">Cat Run</span></div>
-            <div class="phone-app"><div class="phone-app-icon" style="background:#7C4DFF"><img src="images/icons/escape-the-aliens.jpg" alt="Escape The Aliens" style="width:100%;height:100%;object-fit:cover;border-radius:13px;"></div><span class="phone-app-name">Escape Aliens</span></div>
-            <div class="phone-app"><div class="phone-app-icon" style="background:#E91E63"><img src="images/icons/cut-the-rope.jpg" alt="Cut The Rope" style="width:100%;height:100%;object-fit:cover;border-radius:13px;"></div><span class="phone-app-name">Cut The Rope</span></div>
-            <div class="phone-app"><div class="phone-app-icon" style="background:#FF5722"><img src="images/icons/perfect-slice.jpg" alt="Perfect Slice" style="width:100%;height:100%;object-fit:cover;border-radius:13px;"></div><span class="phone-app-name">Perfect Slice</span></div>
+      <div class="phone-3d-wrapper">
+        <div class="phone-frame">
+          <div class="phone-btn-vol"></div>
+          <div class="phone-btn-vol2"></div>
+          <div class="phone-btn-power"></div>
+          <div class="phone-reflection"></div>
+          <div class="phone-notch"></div>
+          <div class="phone-screen">
+            <div class="phone-status">
+              <span class="phone-status-time">9:41</span>
+              <span class="phone-status-icons">▶ ◼ ▮▮</span>
+            </div>
+            <div class="phone-store-bar">🔍 FK Studios oyunları...</div>
+            <div class="phone-store-label">Oyunlarım</div>
+            <div class="phone-app-grid">
+              <div class="phone-app"><div class="phone-app-icon"><img src="images/icons/fruit-mania.jpg" alt="Fruit Mania"></div><span class="phone-app-name">Fruit Mania</span></div>
+              <div class="phone-app"><div class="phone-app-icon"><img src="images/icons/zigzag-game.jpg" alt="ZigZag"></div><span class="phone-app-name">ZigZag</span></div>
+              <div class="phone-app"><div class="phone-app-icon"><img src="images/icons/cat-run.jpg" alt="Cat Run"></div><span class="phone-app-name">Cat Run</span></div>
+              <div class="phone-app"><div class="phone-app-icon"><img src="images/icons/escape-the-aliens.jpg" alt="Escape Aliens"></div><span class="phone-app-name">Escape Aliens</span></div>
+              <div class="phone-app"><div class="phone-app-icon"><img src="images/icons/cut-the-rope.jpg" alt="Cut The Rope"></div><span class="phone-app-name">Cut The Rope</span></div>
+              <div class="phone-app"><div class="phone-app-icon"><img src="images/icons/perfect-slice.jpg" alt="Perfect Slice"></div><span class="phone-app-name">Perfect Slice</span></div>
+              <div class="phone-app"><div class="phone-app-icon"><img src="images/icons/shooting-color.jpg" alt="Shooting Color"></div><span class="phone-app-name">Shooting Color</span></div>
+              <div class="phone-app"><div class="phone-app-icon"><img src="images/icons/fun-goal.jpg" alt="Fun Goal"></div><span class="phone-app-name">Fun Goal</span></div>
+              <div class="phone-app"><div class="phone-app-icon"><img src="images/icons/shooty-clocks.jpg" alt="Shooty Clocks"></div><span class="phone-app-name">Shooty Clocks</span></div>
+            </div>
           </div>
         </div>
+        <div class="phone-side"></div>
+        <div class="phone-bottom"></div>
       </div>
       <div class="float-badge float-badge-2">
         <div class="float-badge-icon" style="background:#FFF3E0">⭐</div>
@@ -560,86 +601,6 @@ const projects = [
     screenshots: [],
     tags: ['Unity', 'C#', 'AdMob', 'Hyper-Casual'],
     price: '5.000 ₺'
-  },
-  {
-    id: 2,
-    type: 'app',
-    iconBg: '#4CAF50',
-    iconEmoji: '📊',
-    iconUrl: '',
-    name: 'Örnek Uygulama 1',
-    tagline: 'Android Uygulaması',
-    category: 'Verimlilik',
-    description: 'Uygulamanızın açıklamasını buraya yazın. Hangi teknolojilerle yapıldığını, özelliklerini ve kullanıcıya kattığı değeri anlatan birkaç cümle ekleyin.',
-    videoId: '',
-    screenshots: [],
-    tags: ['Android Studio', 'Kotlin', 'Firebase'],
-    rating: 4.6,
-    downloads: '5K+'
-  },
-  {
-    id: 3,
-    type: 'game',
-    iconBg: '#FF9800',
-    iconEmoji: '🧩',
-    iconUrl: '',
-    name: 'Örnek Oyun 2',
-    tagline: 'Puzzle Oyunu',
-    category: 'Puzzle',
-    description: 'Oyununuzun açıklamasını buraya yazın. Hangi teknolojilerle yapıldığını, özelliklerini ve oynanış mekaniklerini anlatan birkaç cümle ekleyin.',
-    videoId: '',
-    screenshots: [],
-    tags: ['Unity', 'C#', 'AdMob'],
-    rating: 4.7,
-    downloads: '8K+'
-  },
-  {
-    id: 4,
-    type: 'app',
-    iconBg: '#2196F3',
-    iconEmoji: '💪',
-    iconUrl: '',
-    name: 'Örnek Uygulama 2',
-    tagline: 'Android Uygulaması',
-    category: 'Sağlık & Spor',
-    description: 'Uygulamanızın açıklamasını buraya yazın. Hangi teknolojilerle yapıldığını, özelliklerini ve kullanıcıya kattığı değeri anlatan birkaç cümle ekleyin.',
-    videoId: '',
-    screenshots: [],
-    tags: ['Android Studio', 'Java', 'Room DB'],
-    rating: 4.5,
-    downloads: '3K+'
-  },
-  {
-    id: 5,
-    type: 'game',
-    iconBg: '#9C27B0',
-    iconEmoji: '⚡',
-    iconUrl: '',
-    name: 'Örnek Oyun 3',
-    tagline: 'Aksiyon Oyunu',
-    category: 'Aksiyon',
-    description: 'Oyununuzun açıklamasını buraya yazın. Hangi teknolojilerle yapıldığını, özelliklerini ve oynanış mekaniklerini anlatan birkaç cümle ekleyin.',
-    videoId: '',
-    screenshots: [],
-    tags: ['Unity', 'C#', 'AdMob', '2D'],
-    rating: 4.9,
-    downloads: '15K+'
-  },
-  {
-    id: 6,
-    type: 'app',
-    iconBg: '#F44336',
-    iconEmoji: '📝',
-    iconUrl: '',
-    name: 'Örnek Uygulama 3',
-    tagline: 'Android Uygulaması',
-    category: 'Araçlar',
-    description: 'Uygulamanızın açıklamasını buraya yazın. Hangi teknolojilerle yapıldığını, özelliklerini ve kullanıcıya kattığı değeri anlatan birkaç cümle ekleyin.',
-    videoId: '',
-    screenshots: [],
-    tags: ['Android Studio', 'Kotlin', 'Firebase'],
-    rating: 4.4,
-    downloads: '2K+'
   }
 ];
 
